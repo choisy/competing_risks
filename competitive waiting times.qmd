@@ -1,0 +1,43 @@
+---
+title: "Competitive risks with explicit waiting times"
+format: html
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+Let's start with the simplest case of only 2 competitive risks and consider an $XYZW$ compartmental model where individuals transit from $X$ to $Y$ and then from $Y$ to either $Z$ in proportion $z$ or $W$ in proportion $1 - z$ (i.e. $z = Z / (Z + W)$ at equilibrium). Furthermore, among the individuals that end up in $Z$ (respectively $W$), $p_i$ (respectively $q_i$) is the discrete probability distribution of their duration of stay in $Y$ and let's consider that $n$ (respectively $m$, $m \leq n$) is the maximum duration of stay in $Y$ (respectively $W$).
+
+With this set-up, for the sub-compartments $Y_1\dots Y_m$, we have to compute competitive risks going out of $Y_i$. For that, we proceed in 2 successive steps. First we compute the discrete probability distribution of the waiting times in $Y$, whatever the compartment people end up in after $Y$ (i.e. be it $Z$ or $W$):
+
+$$
+b_i = \frac{z'p_i + (1-z)q_i}{\sum_j^m\left(z'p_j + (1-z)q_j\right)}
+$$ with $z'$ being the proportion of people ultimately ending up in $Z$ that stay in $Y$ less that $m$ time steps:
+
+$$
+z' = \frac{\sum_j^mzp_j}{\sum_k^nzp_k}
+$$ With this, the outgoing rates of sub-compartment $Y_i$ are
+
+$$
+\rho_i = 1 - \sum_j^ib_j
+$$
+
+to sub-compartment $Y_{i+1}$ and
+
+$$
+\delta_i = \frac{b_i}{1 - \sum_j^{i-1}b_j}
+$$ to either compartment $Z$ or compartment $W$. The second step is to split this $\delta_i$ into those going to $Z$:
+
+$$
+\frac{z'p_i}{z'p_i + 1 - zq_i}\delta_i
+$$
+
+and those going to $W$:
+
+$$
+\frac{1 - zq_i}{z'p_i + 1 - zq_i}\delta_i
+$$
+
+For the sub-compartments $Y_{m+1}\dots Y_n$, we don't have competiting risk any more and the usual algorithm can be applied to transitions between sub-compartments and the $Z$ compartment.
+
+This algorithm can easily be generalized to situations with more than 2 competitive risks.
